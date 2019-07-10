@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <script src="{{ url_for('static', filename='scripts/a.js')   }}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    {%if title%}
+        <title> Running App - {{title}} </title>
+    {%else%}
+        <title>
+            Look at where you run
+        </title>
+
+    {%endif%}
+</head>
+
+<body>
+    {% with messages = get_flashed_messages() %}
+    {%if messages%}
+    {% for message in messages %}
+    {{message}}
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+
+    {% block content %} {%endblock%}
+
+
+
+</body>
+
+
+
+
+</html>

@@ -1,0 +1,40 @@
+{%extends "layout.html"%}
+{%block content%}
+
+    <script src="{{ url_for('static', filename='scripts/a.js')   }}"></script>
+    {% set count = namespace(a=1) %}
+    {%for name in imp%}
+
+    <div id="{{name.filename}}block"  idnum="{{name.id}}" >
+    <div></div>
+    {{count.a }}
+    {% set count.a = count.a+1 %}
+     <p id="{{name.filename}}paragraph" > {{   name.filename }} , {{ url_for('static', filename=name.filename)   }} </p>
+    
+
+    <div></div>
+    <iframe id="{{name.filename}}" src="{{ url_for('static', filename= 'stock.html' )   }}"></iframe>
+    <div></div>
+    <button id="{{name.filename + 'button' }}" onclick="fn1( '{{ url_for('static', filename=name.filename)   }}' , '{{name.filename + 'button' }}' , '{{name.filename}}'    , '{{ url_for('static', filename= 'stock.html' )   }}'     ) "   >hide</button>
+    <div></div>
+    <button id="{{name.filename}}removebutton"  onclick="fn2('{{name.filename}}')"   >remove</button>
+    <div></div>
+    <button id="{{'change_button' + name.filename}}"     onclick="changeButton('{{name.filename}}')"   >Make Changes</button>
+    <div id='{{'change_coordinates'+name.filename}}' style="display: none">
+    <textarea id='{{'coord_change_text'+name.filename}}' >{{name.coord_string}}</textarea>
+    <button  id="cancel_button{{name.filename}}"  onclick="cancelButton('{{name.filename}}')"  >Cancel</button>
+    <button id="submit_changes_button{{name.filename}}" onclick="submitChanges('{{name.filename}}')">Submit Changes</button>
+    </div>
+                    
+    </div>
+    <p>  </p>
+    {%endfor%}
+
+    <div></div>
+
+
+    <a href="/" > Go back home </a>
+
+
+
+{%endblock%}

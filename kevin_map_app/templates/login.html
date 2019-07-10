@@ -1,0 +1,45 @@
+{%extends "layout.html"%}
+
+{%block content%}
+
+<form method="POST">
+    {{form.hidden_tag()}}
+    <div></div>
+    {{form.username.label()}}
+
+    {% if form.username.errors %}
+        {{ form.username() }}
+        <div>
+            {% for error in form.username.errors %}
+                {{error}}
+            {% endfor %}
+        </div>
+
+    {%else%}
+    {{form.username()}}
+    {% endif %}
+
+    
+    <div></div>
+    {{form.password.label()}}
+    {% if form.password.errors %}
+        {{ form.password() }}
+        <div>
+            {% for error in form.password.errors %}
+                {{error}}
+            {% endfor %}
+        </div>
+
+    {%else%}
+    {{form.password()}}
+    {% endif %}
+    <div></div>
+    {{form.remember.label()}}
+    {{form.remember()}}
+    <div></div>
+    {{form.submit()}}
+</form>
+<div></div>
+
+<a href="/register">Don't have an account? Register</a>
+{%endblock%}

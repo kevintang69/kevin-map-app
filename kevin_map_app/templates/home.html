@@ -1,0 +1,22 @@
+{%extends "layout.html"%}
+
+{%block content%}
+
+Welcome
+
+{% if current_user.is_authenticated %}
+<div></div>
+your name is {{current_user.username}}
+<div></div>
+<a href="/run" >Runs</a>
+<a href="/input_data" >Input</a>
+<a href="/logout" >Logout</a>
+
+{% else %}
+<a href="/login" >Login</a>
+<a href="/register" >Register</a>
+
+{%endif%}
+
+
+{%endblock%}
