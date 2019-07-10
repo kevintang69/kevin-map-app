@@ -89,6 +89,19 @@ def update():
         obj.coord_string = data['new_coord']
         obj.date_added = tob
         db.session.commit()
+        print()
+        print()
+        print()
+        print()
+        print()
+        print(os.getcwd())
+        print(DIR_PATH)
+        print(os.listdir())
+        print()
+        print()
+        print()
+        print()
+        print()
 
         try:
             os.remove("/app/static/"+data['filename'])
