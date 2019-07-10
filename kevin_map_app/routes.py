@@ -1,7 +1,6 @@
 from flask import  render_template, url_for ,redirect, flash, request, jsonify
 from flask_login import  login_user,current_user, logout_user, login_required
 import psycopg2
-import os 
 import datetime as dt
 
 from kevin_map_app.forms import RegistrationForm, LoginForm
@@ -9,23 +8,9 @@ from kevin_map_app import bcrypt
 from kevin_map_app import app
 from kevin_map_app import login_manager
 from kevin_map_app import db
+
 from kevin_map_app.models import User, Run
-from kevin_map_app.helper import find_center_location , get_time_string , parse_coordinates
-from kevin_map_app.pygmaps import pygmaps
-
-
-
-#local: C:\Users\Kevin  CWD
-#c:\Users\Kevin\Desktop\web dev\new app\kevin_map_app  DIR_PATH
-
-#web: /app CWD
-# /app/kevin_map_app DIR_PATH
-
-DIR_PATH = os.path.dirname(os.path.realpath(__file__))
-static_directory = DIR_PATH + '/static/'
-
-
-
+from kevin_map_app.helper import remove_file, create_map
 
 
 @login_manager.user_loader
@@ -34,8 +19,8 @@ def load_user(user_id):
 
 
 @app.route("/", methods= ["POST",'GET'])
-@app.route("/index", methods= ["POST",'GET'])
-def display():
+@app.route("/home", methods= ["POST",'GET'])
+def home():
     return render_template('home.html', title = 'Homepage')
 
 
@@ -47,12 +32,7 @@ def run():
     info_dict_list = []
     for run_ob in run_objects:
         dic = {}
-        path = parse_coordinates( run_ob.coord_string )
-        name_of_run = current_user.username+ '_'+  get_time_string( run_ob.date_added )   +".html"
-        avg_lat , avg_lng = find_center_location(path)
-        mymap = pygmaps(avg_lat, avg_lng, 5)
-        mymap.addpath(path,"#FF0000")
-        mymap.draw(static_directory+name_of_run)
+        name_of_run = create_map(run_ob.username, run_ob.date_added , run_ob.coord_string)
         dic['filename'] = name_of_run
         dic['id'] = run_ob.id
         dic['coord_string'] = run_ob.coord_string
@@ -67,7 +47,6 @@ def run():
 def inp():
     if request.method =="POST":
         x = request.form
-
         new  = Run(username = current_user.username , coord_string=x["coord_string"], date_added = dt.datetime.utcnow())
         db.session.add(new)
         db.session.commit()
@@ -84,9 +63,8 @@ def update():
         db.session.delete(obj)
         db.session.commit()
 
-        location = static_directory + data['filename']
-        if os.path.exists(location):
-            os.remove(location)
+        remove_file(data['filename'])
+        return jsonify({'result':'good'})
 
 
 
@@ -98,35 +76,11 @@ def update():
         obj.date_added = tob
         db.session.commit()
 
+        remove_file( data['filename'])
 
-        location = static_directory + data['filename']
-        if os.path.exists(location):
-            os.remove(location)
-
-        coordinates_list = parse_coordinates(data['new_coord'])
-        path = []
-        for point in coordinates_list:
-            path.append( ( point[0] , point[1]  ) )
-        
-        time_string = f'{tob.month}-{tob.day}-{tob.year}-{tob.hour}-{tob.minute}-{tob.second}'
-
-
-        name_of_run = obj.username+ '_'+   time_string   +".html"
-        avg_lat , avg_lng = find_center_location(path)
-        mymap = pygmaps(avg_lat, avg_lng, 5)
-        mymap.addpath(path,"#FF0000")
-        location = static_directory + name_of_run
-        if os.path.exists(location):
-            os.remove(location)
-
-        mymap.draw(static_directory+name_of_run)
+        name_of_run = create_map(obj.username, tob, data['new_coord'])
         return jsonify( { 'newName' :  name_of_run }  )
         
-
-
-
-        
-    return jsonify({'result':'good'})
 
 @app.route("/viewruns")
 @login_required
@@ -172,7 +126,7 @@ def viewusers():
 @app.route("/register", methods = ['POST',"GET"])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('display'))
+        return redirect(url_for('home'))
 
 
     form = RegistrationForm()
@@ -196,14 +150,14 @@ def register():
 @app.route("/login", methods = ['POST',"GET"])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('display'))
+        return redirect(url_for('home'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username = form.username.data).first()
         if user and bcrypt.check_password_hash(user.password,form.password.data):
             login_user(user, remember=form.remember.data)
             flash("You have been logged in")
-            return redirect(url_for('display'))
+            return redirect(url_for('home'))
         else:
             flash("Username or password is incorrect")
     
