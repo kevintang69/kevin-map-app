@@ -13,7 +13,16 @@ from kevin_map_app.models import User, Run
 from kevin_map_app.helper import find_center_location , get_time_string , parse_coordinates
 from kevin_map_app.pygmaps import pygmaps
 
+
+
+#local: C:\Users\Kevin  CWD
+#c:\Users\Kevin\Desktop\web dev\new app\kevin_map_app  DIR_PATH
+
+#web: /app CWD
+# /app/kevin_map_app DIR_PATH
+
 DIR_PATH = os.path.dirname(os.path.realpath(__file__))
+static_directory = DIR_PATH + '/static/'
 
 
 
@@ -43,7 +52,7 @@ def run():
         avg_lat , avg_lng = find_center_location(path)
         mymap = pygmaps(avg_lat, avg_lng, 5)
         mymap.addpath(path,"#FF0000")
-        mymap.draw(DIR_PATH+'/static/'+name_of_run)
+        mymap.draw(static_directory+name_of_run)
         dic['filename'] = name_of_run
         dic['id'] = run_ob.id
         dic['coord_string'] = run_ob.coord_string
@@ -75,10 +84,9 @@ def update():
         db.session.delete(obj)
         db.session.commit()
 
-        try:
-            os.remove("/app/static/"+data['filename'])
-        except:
-            os.remove("static/"+data['filename'])
+        location = static_directory + data['filename']
+        if os.path.exists(location):
+            os.remove(location)
 
 
 
@@ -89,24 +97,11 @@ def update():
         obj.coord_string = data['new_coord']
         obj.date_added = tob
         db.session.commit()
-        print()
-        print()
-        print()
-        print()
-        print()
-        print(os.getcwd())
-        print(DIR_PATH)
-        print(os.listdir())
-        print()
-        print()
-        print()
-        print()
-        print()
 
-        try:
-            os.remove("/app/static/"+data['filename'])
-        except:
-            os.remove( DIR_PATH+"/static/"+data['filename'])
+
+        location = static_directory + data['filename']
+        if os.path.exists(location):
+            os.remove(location)
 
         coordinates_list = parse_coordinates(data['new_coord'])
         path = []
@@ -120,14 +115,11 @@ def update():
         avg_lat , avg_lng = find_center_location(path)
         mymap = pygmaps(avg_lat, avg_lng, 5)
         mymap.addpath(path,"#FF0000")
-        try:
-            try:
-                os.remove("/app/static/"+data['filename'])
-            except:
-                os.remove(DIR_PATH+ "/static/"+data['filename'])
-        except:
-            pass
-        mymap.draw(DIR_PATH+'/static/'+name_of_run)
+        location = static_directory + name_of_run
+        if os.path.exists(location):
+            os.remove(location)
+
+        mymap.draw(static_directory+name_of_run)
         return jsonify( { 'newName' :  name_of_run }  )
         
 
