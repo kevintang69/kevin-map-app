@@ -72,23 +72,29 @@ def update():
         idnum = int(data['idnum'])
         tob = dt.datetime.utcnow()
         obj = Run.query.filter_by(id=idnum).first()
-        obj.coord_string = data['new_coord']
-        obj.date_added = tob
-        db.session.commit()
 
-        remove_file( data['filename'])
+        old_coord = obj.coord_string
+        if old_coord.strip() != data['new_coord'].strip():
 
-        name_of_run = create_map(obj.username, tob, data['new_coord'])
-        return jsonify( { 'newName' :  name_of_run }  )
+            obj.coord_string = data['new_coord']
+            obj.date_added = tob
+            db.session.commit()
+
+            remove_file( data['filename'])
+
+            name_of_run = create_map(obj.username, tob, data['new_coord'])
+            return jsonify( { 'newName' :  name_of_run , 'result': 'good'}  )
+        return jsonify({'result':'bad'})
+        
         
 
 @app.route("/viewruns")
 @login_required
 def viewruns():
-    # every = Run.query.all()
-    # for run in every:
-    #     db.session.delete(run)
-    # db.session.commit()
+    every = Run.query.all()
+    for run in every:
+        db.session.delete(run)
+    db.session.commit()
 
     if current_user.username == 'superkill13':
         all_runs = Run.query.all()

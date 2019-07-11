@@ -46,7 +46,12 @@ function submitChanges(x){
     let new_coord = document.getElementById('coord_change_text'+x).value
 
     let req = $.post('update', {idnum:idnum , action:"change" , filename : x , new_coord:new_coord },function(data){ 
+            if (data.result == 'good'){
             updateFilename(x, data.newName)
+            }
+            else if (data.result == 'bad'){
+                alert("There was no change!")
+            }
 
      } )
     
@@ -65,6 +70,7 @@ function  changeButton(x){
 
 
 function updateFilename(oldName, newName){
+
     document.getElementById(oldName + 'button').onclick = function(){fn1( '/static/' + newName , newName + 'button'  , newName    , '/static/stock.html' )}
     document.getElementById(oldName + 'removebutton').onclick = function(){  fn2(newName) }
     document.getElementById(oldName + 'paragraph').innerHTML =  ' '+newName+' , '+   '/static/'+  newName  +   ' '

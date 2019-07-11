@@ -25,7 +25,7 @@ class pygmaps:
 	#def addpointcoord(self, coord):
 	#	self.points.append((coord[0],coord[1]))
 
-	def addradpoint(self, lat,lng,rad,color = '#0000FF'):
+	def addradpoint(self, lat , lng,rad,color = '#0000FF'):
 		self.radpoints.append((lat,lng,rad,color))
 
 	def addpath(self,path,color = '#FF0000'):
@@ -80,8 +80,16 @@ class pygmaps:
 		for line in self.grids:
 			self.drawPolyline(f,line,strokeColor = "#000000")
 	def drawpoints(self,f):
+		counter = 0
 		for point in  self.points:
-			self.drawpoint(f,point[0],point[1],point[2])
+			if counter == 0:
+				self.drawpoint(f,point[0],point[1],point[2], 'S')
+				
+			elif counter == len(self.points)- 1:
+				self.drawpoint(f,point[0],point[1],point[2], 'E')
+			else:
+				self.drawpoint(f,point[0],point[1],point[2], ' ')
+			counter +=1
 
 	def drawradpoints(self, f):
 		for rpoint in self.radpoints:
@@ -126,13 +134,22 @@ class pygmaps:
 
 
 
-	def drawpoint(self,f,lat,lon,color):
+	def drawpoint(self,f,lat,lon,color , label):
+
+
+
 		f.write('\t\tvar latlng = new google.maps.LatLng(%f, %f);\n'%(lat,lon))
 		f.write('\t\tvar img = new google.maps.MarkerImage(\'%s\');\n' % (self.coloricon.replace('XXXXXX',color)))
 		f.write('\t\tvar marker = new google.maps.Marker({\n')
 		f.write('\t\ttitle: "no implimentation",\n')
 		f.write('\t\ticon: img,\n')
-		f.write('\t\tposition: latlng\n')
+		f.write('\t\tposition: latlng,\n')
+
+		f.write("\t\tlabel: \"%s\" "%(label)  )
+
+		
+
+
 		f.write('\t\t});\n')
 		f.write('\t\tmarker.setMap(map);\n')
 		f.write('\n')
@@ -148,6 +165,13 @@ class pygmaps:
 		for coordinate in path:
 			f.write('new google.maps.LatLng(%f, %f),\n' % (coordinate[0],coordinate[1]))
 		f.write('];\n')
+
+		f.write( "var latlngbounds = new google.maps.LatLngBounds();\n"   )
+		f.write( "for (var i = 0; i < PolylineCoordinates.length; i++) { \n"   )
+		f.write("latlngbounds.extend(PolylineCoordinates[i]);} \n")
+		f.write("map.fitBounds(latlngbounds);")
+
+
 		f.write('\n')
 
 		f.write('var Path = new google.maps.Polyline({\n')

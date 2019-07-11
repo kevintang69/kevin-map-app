@@ -51,7 +51,11 @@ def create_map(username, time_ob, coord_string ):
     name_of_run = username+ '_'+   time_string   +".html"
     avg_lat , avg_lng = find_center_location(path)
     mymap = pygmaps(avg_lat, avg_lng, 5)
-    mymap.addpath(path,"#FF0000")
+    for pair in path:
+        mymap.addpoint( pair[0],pair[1]  )
+
+    mymap.addpath(path)
+
     remove_file(STATIC_DIRECTORY + name_of_run)
     mymap.draw(STATIC_DIRECTORY+name_of_run)
     return name_of_run
