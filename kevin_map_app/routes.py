@@ -137,12 +137,12 @@ def update():
         new_time_string = data['new_time_string']
         obj = Run.query.filter_by(id=idnum).first()
         old_time_string = get_time_string( obj.date_added)
-        old_coord = obj.coord_string
+        old_coord = clean_string( obj.coord_string ) 
 
 
 
 
-        if old_coord.strip() != data['new_coord'].strip() or old_time_string != new_time_string  :
+        if old_coord.strip() != data['new_coord'].strip() or old_time_string != new_time_string  or clean_string(data['new_coord']) != old_coord :
 
             obj.coord_string =  clean_string(data['new_coord'])
             obj.date_added = create_time_object(new_time_string)
