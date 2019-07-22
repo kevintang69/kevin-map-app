@@ -3,7 +3,7 @@
 {% set count = namespace(a=1) %}
 {%for ob in imp%}
     {% set name = ob.filename %}
-    <div current_num="{{count.a}}" section_name = "{{name}}" section_id="{{ob.id}}"  id="{{name}}_section">
+    <div  class="map-section" current_num="{{count.a}}" section_name = "{{name}}" section_id="{{ob.id}}"  id="{{name}}_section">
         <p id="{{count.a}}_count" >{{count.a}}</p>
         {%set count.a = count.a +1%}
         <div></div>
@@ -12,13 +12,28 @@
         <iframe id="{{name}}_map" src="{{url_for('static',filename='stock.html')}}"></iframe>
         <div></div>
         <button   class="toggleButton">Show Map</button>
-        <div></div>
+
         <button  class="removeButton">Remove Run</button>
         <div></div>
         <button id="{{name}}_makeChangesButton"  class="makeChangesButton">Make Changes</button>
-        <div></div>
-        <div id="{{name}}_makeChangesKit" style="display: none">
-            <textarea id="{{name}}_changeInput">{{ob.coord_string}}</textarea>
+
+        <div class="input-box" id="{{name}}_makeChangesKit" style="display: none">
+            <label for="{{name}}_changeInput">Insert New Coordinates</label>
+            <textarea class="coord-input-box" id="{{name}}_changeInput" placeholder="Insert New Coordinates">{{ob.coord_string}}</textarea>
+
+            <label for="{{name}}_date">Date</label>
+            <input class="coord-input-box" id="{{name}}_date" type="date" value = "{{ob.date}}" >
+
+            <label for="{{name}}_hour">Hour</label>
+            <input class="coord-input-box" id="{{name}}_hour" type="number" min="0" max="23" placeholder="Hour" value="{{ob.hour}}" > 
+
+            <label for="{{name}}_minute">Minute</label>
+            <input class="coord-input-box" id="{{name}}_minute" type="number" min="0" max="59" placeholder="Minute" value="{{ob.minute}}"> 
+
+            <label for="{{name}}_second">Second</label>
+            <input class="coord-input-box" id="{{name}}_second" type="number" min="0" max="59" placeholder="Second" value="{{ob.second}}"> 
+
+            <div></div>
             <button class="cancelButton" >Cancel</button>
             <button class="submitChangesButton">Submit Changes</button>
         </div>

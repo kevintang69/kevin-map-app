@@ -2,31 +2,50 @@
 
 {%block content%}
 
-<form method="POST" >
+
+<div  id="generic-form" >
+<form method="POST" action="update">
 
 
+<div class="input-box"  >
+    <label>Input Coordinates as lat1,lng1|lat2,lng2|... (minimum of 1 coordinate pair)</label>
+    <textarea class="coord-input-box" name="coord_string" type="text" placeholder="put your coordinates here" ></textarea>
+
+    <label>Date of Run</label>
+    <input class="coord-input-box" type="date" name="date" >
+
+    <label>Hour of Run</label>
+    <input class="coord-input-box" type="number" min="0" max="23" placeholder="Hour" name="hour"  > 
+
+    <label>Minute of Run</label>
+    <input class="coord-input-box" type="number" min="0" max="59" placeholder="Minute" name="minute"> 
+
+    <label>Second of Run</label>
+    <input class="coord-input-box" type="number" min="0" max="59" placeholder="Second" name="second" > 
 
 
-<textarea name="coord_string" type="text" placeholder="put your coordinates here" >
+    <input style="display: none"  name="action" value="add"   >
 
-</textarea>
+    <div></div>
+    <label id='def-date' for="default_date" >Use Current Time</label>
+    <input id="default_date" type="checkbox" checked  name='default' value='ff' >
+    <div></div>
 
-<button id="submit">submit</button>
+
+    <input type="submit" id="submit"    ></input >
+
+</div>
 
 
 </form>
 
+
+
+
 <div></div>
 
-<p>
+</div>
 
-
-
-
-
-
-
-</p>
 
 <a href="/" > Go back home </a>
     

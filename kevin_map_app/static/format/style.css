@@ -1,0 +1,155 @@
+body{
+    margin: 0px;
+    padding: 0px;
+    background-color: beige;
+
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+      background-color: lightblue;
+    }
+
+    .nav-bar-items{
+        position: absolute;
+        top: 50px;
+        left: 250px;
+        right: 0px;
+
+    }
+
+  }
+
+.nav-bar-logo{
+    position:fixed;
+    top:10px;
+    left: 10px;
+}
+
+.nav-bar{
+    position: fixed;
+    top: 0px;
+    width: 100%;
+    height: 150px;
+    background-color: red;
+    
+}
+
+
+.nav-bar-items{
+    position: fixed;
+    top: 50px;
+    right:100px;
+    list-style-type: none;
+    font-family: sans-serif;
+    overflow: visible;
+}
+
+.nav-bar-button{
+    display: inline-block;
+}
+
+
+
+.nav-bar-link{
+
+    padding:15px;
+    color: blue;
+    background-color: green;
+    
+}
+
+
+
+.nav-bar-link:hover{
+    color: red;
+    background-color: yellowgreen;
+    
+}
+
+
+
+
+#password, #username, #confirm_password , .coord-input-box{
+
+    color: white;
+    background-color: blue;
+    height: 2em;
+    width: 500px;
+    padding-bottom: 15px;
+    padding-left: 10px;
+    margin-bottom: 10px;
+
+}
+
+
+.input-box label{
+    padding-top: 15px;
+    display: block;
+}
+
+#def-date{
+    margin-top: 15px;
+    padding: 15px, 0px;
+    display: inline;
+}
+
+#default_date{
+    margin-top: 15px;
+    padding: 15px, 0px;
+    display: inline;
+}
+
+
+input[type='submit']{
+    margin: 20px 0px;
+
+    padding: 10px;
+    background-color: aliceblue;
+    color: brown;
+}
+
+input[type='submit']:hover  {
+    color: violet;
+    background-color: red;
+}
+
+#butt{
+    margin-top: 1000px;
+}
+
+.flash{
+    color: darkcyan;
+    position: fixed;
+    top: 160px;
+    left: 10px;
+}
+
+#meat{
+    margin-top: 250px;
+    margin-left: 10%;
+    margin-right: 10%;
+    width: 80%;
+}
+
+
+.map-section{
+    margin: 20px;
+    padding: 20px;
+    border: 3px blue solid;
+    width: 40%;
+ 
+}
+
+button{
+    margin: 5px 0px;
+
+    padding: 10px;
+    background-color: aliceblue;
+    color: brown;
+}
+
+button:hover  {
+    color: violet;
+    background-color: red;
+}

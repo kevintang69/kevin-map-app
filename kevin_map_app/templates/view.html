@@ -1,17 +1,29 @@
-<!DOCTYPE html>
-<html>
+{%extends "layout.html"%}
 
-<body>
-    {% for ob in imp %}
-    <p>
-        {{ ob.id }}_____{{ob.username}}_______{{ob.coords}}_______{{ob.password}}
-    </p>
-    <div></div>
-
-    {% endfor %}
+{%block content%}
 
 
-</body>
+    <table>
+        <tr>
+            {% for item in imp[0] %}
+                
+                <th>{{item}}</th>
+            {% endfor %}
+        </tr>
+
+        {% for dic in imp %}
+            <tr>
+                {% for item in dic %}
+                   <td>{{ dic[item]  }}</td> 
+
+                {% endfor %}
+               
+       
+            </tr>
+        {% endfor %}
 
 
-</html>
+    </table>
+
+
+{% endblock %}

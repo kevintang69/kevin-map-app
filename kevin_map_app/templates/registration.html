@@ -2,22 +2,26 @@
 
 {%block content%}
 
+<div  id="generic-form"   >
 <form method="POST">
     {{form.hidden_tag()}}
     <div></div>
-    {{form.username.label()}}
 
-    {% if form.username.errors %}
-        {{ form.username() }}
-        <div>
-            {% for error in form.username.errors %}
-                {{error}}
-            {% endfor %}
-        </div>
+    <span class="input-box"  >
+        {{form.username.label()}}
 
-    {%else%}
-    {{form.username()}}
-    {% endif %}
+        {% if form.username.errors %}
+            {{ form.username() }}
+            <div>
+                {% for error in form.username.errors %}
+                    {{error}}
+                {% endfor %}
+            </div>
+
+        {%else%}
+        {{form.username()}}
+        {% endif %}
+
 
     
     <div></div>
@@ -47,11 +51,16 @@
     {{form.confirm_password()}}
     {% endif %}
     <div></div>
+
+</span>
+
     {{form.submit()}}
 </form>
+
+
 
 <div></div>
 <a href="/login">Already have an account? Login</a>
 
-
+</div>
 {%endblock%}

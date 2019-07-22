@@ -76,7 +76,26 @@ $(document).ready(
                 this.parentElement.style.display = 'none'
                 
                 let new_coord = document.getElementById(filename+"_changeInput").value
-                let req = $.post('/update' , {filename:filename,idnum:idnum,new_coord:new_coord ,action:"change"} ,
+                let date_string = document.getElementById(filename+"_date").value
+                let hour_string = document.getElementById(filename+"_hour").value.toString()
+                let minute_string = document.getElementById(filename+"_minute").value.toString()
+                let second_string = document.getElementById(filename+"_second").value.toString()
+
+                if (parseInt(hour_string) <10 ){
+                     hour_string = "0"+ hour_string
+                }
+                if (parseInt(minute_string) <10 ){
+                     minute_string = "0"+ minute_string
+                }
+                if (parseInt(second_string) <10 ){
+                     second_string = "0"+ second_string
+                }
+
+                let new_time_string = date_string.substring(5,7)+'-'+ date_string.substring(8,10)+'-'+ date_string.substring(0,4)+'-'+hour_string+'-'+minute_string+'-'+second_string
+
+
+
+                let req = $.post('/update' , {filename:filename,idnum:idnum,new_coord:new_coord ,action:"change", new_time_string:new_time_string} ,
                         function(data){
                             if (data.result == 'good'){
                                 updateIDs(filename, data.newName)
@@ -101,9 +120,9 @@ function updateIDs(oldName, newName ){
         document.getElementById(oldName + "_map").src = "static/"+newName
     }
 
-    let suffix_list = [ "section","count","paragraph","map","makeChangesButton","makeChangesKit","changeInput"]
+    let suffix_list = [ "section","paragraph","map","makeChangesButton","makeChangesKit","changeInput", "date",'hour','minute','second']
     suffix_list.forEach(function(suffix){
-        console.log(newName + "_"+suffix)
+
         document.getElementById(oldName + "_" +suffix ).id = newName + "_"+suffix
     })
     

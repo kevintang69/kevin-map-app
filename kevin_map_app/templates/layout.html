@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-        
-        
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='format/style.css')   }}">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="{{ url_for('static', filename='scripts/b.js')   }}"></script>
     {%if title%}
@@ -16,6 +16,26 @@
 </head>
 
 <body>
+
+    <span class="nav-bar">
+        
+
+        <div>
+            <a  class="nav-bar-logo" href="/home"  ><img src="{{ url_for('static', filename='logo.jpg')   }}" width="150px"  ></a>
+        </div>
+
+        <div >
+            <ul class="nav-bar-items">
+            {% for item in nav %}
+
+                <li class="nav-bar-button" ><a class="nav-bar-link" style="text-decoration:none" href="{{ item.link }}">{{item.name}}</a></li>
+
+            {% endfor %}
+            </ul>
+        </div>
+    </span>
+
+    <div class="flash"  >
     {% with messages = get_flashed_messages() %}
     {%if messages%}
     {% for message in messages %}
@@ -23,11 +43,13 @@
     {% endfor %}
     {% endif %}
     {% endwith %}
+</div>
 
+    <div id="meat">
 
     {% block content %} {%endblock%}
-
-
+    </div>
+    <div id="butt" ></div>
 
 </body>
 
