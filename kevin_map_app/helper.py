@@ -110,7 +110,7 @@ def create_map(username, time_ob, coord_string ):
     path = check_input(coord_string)
 
     time_string = get_time_string(time_ob)
-    name_of_run = username+ '_'+   time_string   +".html"
+    name_of_run = username+ '_'+   time_string   + '_' +  coord_string +".html"
     avg_lat , avg_lng = find_center_location(path)
     mymap = pygmaps(avg_lat, avg_lng, 5)
     for pair in path:

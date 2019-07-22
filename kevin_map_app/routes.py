@@ -150,7 +150,7 @@ def update():
 
             remove_file( data['filename'])
 
-            name_of_run = create_map(obj.username, create_time_object(new_time_string), data['new_coord'])
+            name_of_run = create_map(obj.username, create_time_object(new_time_string), clean_string(data['new_coord']))
             return jsonify( { 'newName' :  name_of_run , 'result': 'good'}  )
     return jsonify({'result':'bad'})
 
