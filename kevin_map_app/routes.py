@@ -101,12 +101,18 @@ def update():
 
 
         if 'default' in data:
-            time_ob = dt.datetime.utcnow()
+            ori_time_ob = dt.datetime.utcnow()
+            time_ob = create_time_object(get_time_string(ori_time_ob))
         else:
             year = int(data['date'][0:4])
             day = int(data['date'][8:10])
             month = int(data['date'][5:7])
             time_ob = dt.datetime( year,month,day,int(data['hour']),int(data['minute']),int(data['second'] ))  
+
+        existing_times = Run.query.filter_by(date_added = time_ob)
+        if existing_times.count()!=0:
+            flash("Duplicate time input")
+            return redirect(url_for('inp'))
 
         new_run = Run(username= current_user.username , date_added = time_ob,coord_string= clean_string(data['coord_string'])  )
         db.session.add(new_run)
@@ -135,23 +141,29 @@ def update():
        
         idnum = int(data['idnum'])
         new_time_string = data['new_time_string']
-        obj = Run.query.filter_by(id=idnum).first()
-        old_time_string = get_time_string( obj.date_added)
-        old_coord = clean_string( obj.coord_string ) 
+
+
+        existing_times = Run.query.filter_by(date_added = create_time_object(new_time_string))
+        if existing_times.count()==0: #no duplicate times
+
+
+            obj = Run.query.filter_by(id=idnum).first()
+            old_time_string = get_time_string( obj.date_added)
+            old_coord = clean_string( obj.coord_string ) 
 
 
 
 
-        if old_coord.strip() != data['new_coord'].strip() or old_time_string != new_time_string  or clean_string(data['new_coord']) != old_coord :
+            if old_coord.strip() != data['new_coord'].strip() or old_time_string != new_time_string  or clean_string(data['new_coord']) != old_coord :
 
-            obj.coord_string =  clean_string(data['new_coord'])
-            obj.date_added = create_time_object(new_time_string)
-            db.session.commit()
+                obj.coord_string =  clean_string(data['new_coord'])
+                obj.date_added = create_time_object(new_time_string)
+                db.session.commit()
 
-            remove_file( data['filename'])
+                remove_file( data['filename'])
 
-            name_of_run = create_map(obj.username, create_time_object(new_time_string), clean_string(data['new_coord']))
-            return jsonify( { 'newName' :  name_of_run , 'result': 'good'}  )
+                name_of_run = create_map(obj.username, create_time_object(new_time_string), clean_string(data['new_coord']))
+                return jsonify( { 'newName' :  name_of_run , 'result': 'good'}  )
     return jsonify({'result':'bad'})
 
 
