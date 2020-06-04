@@ -144,7 +144,7 @@ def update():
 
 
         existing_times = Run.query.filter_by(date_added = create_time_object(new_time_string))
-        if existing_times.count()==0: #no duplicate times
+        if existing_times.count()>0: #no duplicate times
 
 
             obj = Run.query.filter_by(id=idnum).first()
